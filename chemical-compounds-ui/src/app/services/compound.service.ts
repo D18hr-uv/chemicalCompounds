@@ -24,6 +24,10 @@ export class CompoundService {
   }
 
   createCompound(data: any) {
-    return this.http.post(this.API, data);
+    return this.http.post(
+      'http://localhost:5000/api/compounds',
+      data
+    );
   }
+
 }

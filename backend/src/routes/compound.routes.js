@@ -1,23 +1,34 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
+const Compound = require('../models/compound.model');
 
-const controller = require("../controllers/compound.controller");
-const {
-  validateCompoundCreate,
-  validateCompoundUpdate,
-} = require("../validators/compound.validator");
+// CREATE COMPOUND
+router.post('/', async (req, res) => {
+  try {
+    console.log('REQ BODY:', req.body); // 👈 IMPORTANT DEBUG
 
-// READ
-router.get("/", controller.getCompounds);
-router.get("/:id", controller.getCompoundById);
+    const { name, image, description } = req.body;
 
-// CREATE
-router.post("/", validateCompoundCreate, controller.createCompound);
+    if (!name || !image || !description) {
+      return res.status(400).json({
+        message: 'All fields (name, image, description) are required'
+      });
+    }
 
-// UPDATE
-router.put("/:id", validateCompoundUpdate, controller.updateCompound);
+    const compound = await Compound.create({
+      name,
+      image,
+      description
+    });
 
-// DELETE
-router.delete("/:id", controller.deleteCompound);
+    return res.status(201).json(compound);
+
+  } catch (err) {
+    console.error('CREATE ERROR:', err);
+    return res.status(500).json({
+      message: err.message
+    });
+  }
+});
 
 module.exports = router;

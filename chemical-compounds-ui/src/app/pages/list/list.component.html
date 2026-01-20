@@ -1,105 +1,113 @@
 <div class="max-w-5xl mx-auto px-4 py-6">
 
   <!-- HEADER -->
-  <h1 class="text-2xl font-bold mb-6">
-    Chemical Compounds
-  </h1>
+   <div class="flex gap-2">
+    <h1 class=" flex-1 text-3xl font-bold mb-8 text-gray-900">
+      Chemical Compounds
+    </h1>
+    <button
+      class="flex items-center gap-2 btn btn-primary"
+      (click)="openCreate()"
+    >
+      + Create
+    </button>
+  </div>
+
 
   <!-- LOADING -->
   <div *ngIf="loading" class="flex justify-center py-20">
-    <span class="loading loading-spinner loading-lg"></span>
+    <span class="loading loading-spinner loading-lg text-primary"></span>
   </div>
 
   <!-- EMPTY STATE -->
   <div
     *ngIf="!loading && compounds.length === 0"
-    class="text-center py-20 opacity-70"
+    class="text-center py-20 opacity-70 text-lg"
   >
     No compounds found
   </div>
 
   <!-- CARD LIST -->
-  <div class="max-w-5xl mx-auto p-6 space-y-4">
+  <div class="max-w-4xl mx-auto space-y-6">
 
-  <div
-    *ngFor="let c of compounds"
-    class="flex flex-row items-center gap-6
-           bg-gray-100 p-4 rounded-lg shadow-md"
-  >
-
-    <!-- IMAGE -->
     <div
-      class="w-24 h-24 bg-white rounded
-             flex items-center justify-center
-             overflow-hidden shrink-0 border"
+      *ngFor="let c of compounds"
+      class="flex flex-col sm:flex-row items-center gap-6
+             bg-white border-2 border-gray-300 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
     >
-      <img
-        [src]="c.image"
-        [alt]="c.name"
-        class="max-w-full max-h-full object-contain"
-        height="100px"
-        width="100px"
-      />
-    </div>
 
-    <!-- CONTENT -->
-    <div class="flex flex-col flex-1 gap-2">
+      <!-- IMAGE SECTION (LEFT) -->
+      <div
+        class="w-40 h-32 border-2 border-gray-800 rounded-xl
+               flex items-center justify-center p-2 shrink-0 bg-white overflow-hidden"
+      >
+        <img
+          [src]="c.image"
+          [alt]="c.name"
+          class="max-w-full max-h-full object-contain"
+        />
+      </div>
 
-      <!-- NAME -->
-      <h2 class="text-lg font-semibold">
-        {{ c.name }}
-      </h2>
+      <!-- CONTENT SECTION (RIGHT) -->
+      <div class="flex flex-col flex-1 gap-4 w-full">
 
-      <!-- ACTIONS -->
-      <div class="flex flex-row gap-2">
-        <a
-          [routerLink]="['/compounds', c.id]"
-          class="btn btn-soft btn-info btn-sm"
-        >
-          View
-        </a>
+        <!-- NAME BOX -->
+        <div class="border-2 border-gray-800 rounded-lg p-3 w-full bg-white">
+          <h2 class="text-xl font-bold text-center text-gray-800 truncate">
+            {{ c.name }}
+          </h2>
+        </div>
 
-        <a
-          [routerLink]="['/edit', c.id]"
-          class="btn btn-soft btn-warning btn-sm"
-        >
-          Edit
-        </a>
+        <!-- ACTIONS -->
+        <div class="flex flex-row gap-4 justify-between">
+          <a
+            [routerLink]="['/compounds', c.id]"
+            class="btn btn-neutral btn-outline flex-1"
+          >
+            View
+          </a>
 
-        <button
-          class="btn btn-soft btn-error btn-sm"
-          (click)="openDelete(c)"
-        >
-          Delete
-        </button>
+          <a
+            [routerLink]="['/edit', c.id]"
+            class="btn btn-neutral btn-outline flex-1"
+          >
+            Edit
+          </a>
+
+          <button
+            class="btn btn-error btn-outline flex-1"
+            (click)="openDelete(c)"
+          >
+            Delete
+          </button>
+        </div>
+
       </div>
 
     </div>
 
   </div>
 
-</div>
-
 
   <!-- PAGINATION -->
   <div
     *ngIf="!loading && totalPages > 1"
-    class="flex justify-center gap-4 mt-8"
+    class="flex justify-center gap-4 mt-10"
   >
     <button
-      class="btn btn-outline btn-sm"
+      class="btn btn-outline"
       (click)="prevPage()"
       [disabled]="page === 1"
     >
-      Prev
+      Previous
     </button>
 
-    <span class="text-sm self-center">
+    <span class="text-lg font-medium self-center">
       Page {{ page }} of {{ totalPages }}
     </span>
 
     <button
-      class="btn btn-outline btn-sm"
+      class="btn btn-outline"
       (click)="nextPage()"
       [disabled]="page === totalPages"
     >
@@ -111,14 +119,14 @@
 
 <!-- DELETE MODAL -->
 <dialog class="modal" [open]="selectedCompound">
-  <div class="modal-box">
+  <div class="modal-box border-2 border-gray-800 rounded-xl">
     <h3 class="font-bold text-lg">
       Delete Compound
     </h3>
 
-    <p class="py-4">
+    <p class="py-4 text-lg">
       Are you sure you want to delete
-      <strong>{{ selectedCompound?.name }}</strong>?
+      <span class="font-bold text-error">{{ selectedCompound?.name }}</span>?
     </p>
 
     <div class="modal-action">
@@ -129,5 +137,60 @@
         Delete
       </button>
     </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button (click)="closeDelete()">close</button>
+  </form>
+</dialog>
+
+<!-- CREATE MODAL -->
+<dialog class="modal" [open]="createOpen">
+  <div class="modal-box">
+
+    <h3 class="font-bold text-lg mb-4">
+      Create New Compound
+    </h3>
+
+    <form class="space-y-3">
+
+      <input
+        type="text"
+        placeholder="Compound Name"
+        class="input input-bordered w-full"
+        [(ngModel)]="newCompound.name"
+        name="name"
+      />
+
+      <input
+        type="text"
+        placeholder="Image URL"
+        class="input input-bordered w-full"
+        [(ngModel)]="newCompound.image"
+        name="image"
+      />
+
+      <textarea
+        placeholder="Description"
+        class="textarea textarea-bordered w-full"
+        rows="3"
+        [(ngModel)]="newCompound.description"
+        name="description"
+      ></textarea>
+
+    </form>
+
+    <div class="modal-action">
+      <button class="btn btn-outline" (click)="closeCreate()">
+        Cancel
+      </button>
+
+      <button
+        class="btn btn-primary"
+        (click)="createCompound()"
+      >
+        Create
+      </button>
+    </div>
+
   </div>
 </dialog>

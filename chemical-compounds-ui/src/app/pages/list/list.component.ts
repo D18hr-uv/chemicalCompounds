@@ -81,4 +81,78 @@ export class ListComponent implements OnInit {
       }
     });
   }
+
+
+  // CREATE MODAL STATE
+  createOpen: boolean = false;
+
+  // FORM MODEL
+  newCompound = {
+    name: '',
+    image: '',
+    description: ''
+  };
+
+  // OPEN CREATE MODAL
+  openCreate(): void {
+    this.createOpen = true;
+  }
+
+  // CLOSE CREATE MODAL
+  closeCreate(): void {
+    this.createOpen = false;
+    this.resetCreateForm();
+  }
+
+  // RESET FORM
+  resetCreateForm(): void {
+    this.newCompound = {
+      name: '',
+      image: '',
+      description: ''
+    };
+  }
+
+  // CREATE COMPOUND (POST)
+  // createCompound(): void {
+  //   if (!this.newCompound.name || !this.newCompound.image) {
+  //     alert('Name and Image are required');
+  //     return;
+  //   }
+
+  //   this.service.createCompound(this.newCompound).subscribe({
+  //     next: () => {
+  //       this.closeCreate();
+  //       this.loadCompounds(); // refresh list
+  //     },
+  //     error: (err) => {
+  //       console.error('Create failed', err);
+  //       alert('Failed to create compound');
+  //     }
+  //   });
+  // }
+  // testClick() {
+  //   alert('Create works');
+  // }
+  createCompound() {
+    console.log('Payload:', this.newCompound);
+
+    this.service.createCompound(this.newCompound).subscribe({
+      next: (res) => {
+        console.log('Success:', res);
+        this.closeCreate();
+        this.loadCompounds();
+      },
+      error: (err) => {
+        console.error('Backend error:', err);
+        alert(err && err.error && err.error.message
+          ? err.error.message
+          : 'Create failed');
+      }
+
+    });
+  }
+
+
 }
+

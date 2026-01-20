@@ -8,8 +8,14 @@ const compoundRoutes = require("./routes/compound.routes");
 
 const app = express();
 
+app.use(cors({
+  origin: 'http://localhost:4200',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+
 /* ✅ BASIC MIDDLEWARE */
-app.use(cors());
 app.use(express.json());
 
 /* ✅ ROOT TEST */
@@ -28,6 +34,7 @@ sequelize.authenticate()
   .catch(err => console.error("❌ DB error:", err));
 
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
