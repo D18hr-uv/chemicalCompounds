@@ -1,6 +1,28 @@
 const Compound = require("../models/Compound");
 
-// GET PAGINATED COMPOUNDS
+// POST COMPOUND (Create)
+exports.createCompound = async (req, res) => {
+  try {
+    const { name, image, description } = req.body;
+
+    const compound = await Compound.create({
+      name,
+      image,
+      description,
+    });
+
+    res.status(201).json({
+      message: "Compound created successfully",
+      compound,
+    });
+  } catch (err) {
+    console.error("Create compound error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+// GET PAGINATED COMPOUNDS(Read)
 exports.getCompounds = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
@@ -26,14 +48,44 @@ exports.getCompoundById = async (req, res) => {
   res.json(compound);
 };
 
-// UPDATE COMPOUND
+// UPDATE COMPOUND (Update)
 exports.updateCompound = async (req, res) => {
   const { name, image, description } = req.body;
 
-  await Compound.update(
-    { name, image, description },
-    { where: { id: req.params.id } }
-  );
+  const compound = await Compound.findByPk(req.params.id);
+  if (!compound) {
+    return res.status(404).json({ message: "Compound not found" });
+  }
 
-  res.json({ message: "Compound updated successfully" });
+  compound.name = name;
+  compound.image = image;
+  compound.description = description;
+
+  await compound.save();
+
+  res.status(200).json({
+    message: "Compound updated successfully",
+    compound,
+  });
 };
+
+// DELETE COMPOUND (Delete)
+exports.deleteCompound = async (req, res) => {
+  try {
+    const compound = await Compound.findByPk(req.params.id);
+
+    if (!compound) {
+      return res.status(404).json({ message: "Compound not found" });
+    }
+
+    await compound.destroy();
+
+    res.status(200).json({
+      message: "Compound deleted successfully",
+    });
+  } catch (err) {
+    console.error("Delete compound error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+

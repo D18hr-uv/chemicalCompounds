@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const sequelize = require("./config/database");
@@ -7,16 +8,26 @@ const compoundRoutes = require("./routes/compound.routes");
 
 const app = express();
 
+/* ✅ BASIC MIDDLEWARE */
 app.use(cors());
 app.use(express.json());
 
+/* ✅ ROOT TEST */
+app.get("/", (req, res) => {
+  res.status(200).send("API OK");
+});
+
+/* ✅ API ROUTES */
 app.use("/api/compounds", compoundRoutes);
 
-sequelize
-  .authenticate()
-  .then(() => console.log("✅ Database connected"))
-  .catch((err) => console.error("❌ DB Error:", err));
+/* ❌ NO OTHER app.use BELOW THIS */
 
-app.listen(process.env.PORT, () => {
-  console.log(`🚀 Server running on port ${process.env.PORT}`);
+/* ✅ DB CHECK */
+sequelize.authenticate()
+  .then(() => console.log("✅ Database connected"))
+  .catch(err => console.error("❌ DB error:", err));
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });

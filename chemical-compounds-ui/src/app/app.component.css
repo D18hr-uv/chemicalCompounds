@@ -1,0 +1,9 @@
+table td, table th {
+  overflow: hidden;
+  word-break: break-word;
+}
+
+img, svg {
+  max-width: 100%;
+  max-height: 100%;
+}

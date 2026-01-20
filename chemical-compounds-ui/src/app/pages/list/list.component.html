@@ -1,0 +1,150 @@
+<!-- Loading Skeleton -->
+<!-- Loading State -->
+<div *ngIf="loading" class="p-6">
+  <div class="skeleton h-10 mb-3"></div>
+  <div class="skeleton h-10 mb-3"></div>
+  <div class="skeleton h-10 mb-3"></div>
+</div>
+
+
+<!-- Empty State -->
+<div
+  *ngIf="!loading && compounds.length === 0"
+  class="flex flex-col items-center justify-center mt-20 text-center"
+>
+  <div class="text-6xl mb-4">🧪</div>
+  <h2 class="text-2xl font-bold">No Compounds Found</h2>
+  <p class="opacity-70">Try adding a new compound.</p>
+</div>
+
+
+<!-- List Compounds -->
+
+<div class="overflow-x-auto p-6" *ngIf="!loading && compounds.length > 0">
+  <table class="table table-zebra table-bordered w-full table-fixed">
+    <!-- head -->
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Compound</th>
+        <th>Description</th>
+        <th class="text-right">Actions</th>
+      </tr>
+    </thead>
+
+    <!-- body -->
+    <tbody>
+      <tr *ngFor="let c of compounds; let i = index">
+        <td>{{ i + 1 }}</td>
+
+        <td>
+          <div class="flex items-center gap-3">
+            <div class="avatar">
+              <div class="mask mask-squircle w-12 h-12 bg-base-300 overflow-hidden">
+                <img
+                  [src]="c.image"
+                  class="w-12 h-12 object-contain"
+                  alt="compound"
+                />
+              </div>
+            </div>
+            <div>
+              <div class="font-bold">{{ c.name }}</div>
+            </div>
+          </div>
+        </td>
+
+        <td class="max-w-md">
+          <p class="truncate text-sm leading-relaxed">
+            {{ c.description }}
+          </p>
+        </td>
+
+
+        <td class="text-right space-x-2">
+          <!-- Soft Buttons -->
+          <a
+            [routerLink]="['/compounds', c.id]"
+            class="btn btn-soft btn-info btn-xs"
+          >
+            View
+          </a>
+
+          <a
+            [routerLink]="['/edit', c.id]"
+            class="btn btn-soft btn-warning btn-xs"
+          >
+            Edit
+          </a>
+
+          <button
+            class="btn btn-soft btn-error btn-xs"
+            (click)="openDelete(c)"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+
+    <!-- foot -->
+    <tfoot>
+      <tr>
+        <th>#</th>
+        <th>Compound</th>
+        <th>Description</th>
+        <th class="text-right">Actions</th>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+
+<!-- <div
+  *ngFor="let c of compounds"
+  class="card bg-base-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+>
+  <figure>
+    <img
+      [src]="c.image"
+      alt="{{ c.name }}"
+      class="h-48 w-full object-cover"
+    />
+  </figure>
+
+  <div class="card-body">
+    <h2 class="card-title">{{ c.name }}</h2>
+
+    <div class="card-actions justify-end">
+      <a [routerLink]="['/compounds', c.id]" class="btn btn-primary btn-sm">
+        View
+      </a>
+      <a [routerLink]="['/edit', c.id]" class="btn btn-secondary btn-sm">
+        Edit
+      </a>
+      <button
+        class="btn btn-error btn-sm"
+        (click)="openDelete(c)"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+</div> -->
+
+<!-- Delete Modal -->
+<input type="checkbox" id="delete-modal" class="modal-toggle" [checked]="selected" />
+<div class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg text-error">Delete Compound</h3>
+    <p class="py-4">
+      Are you sure you want to delete
+      <strong>{{ selected?.name }}</strong>?
+    </p>
+
+    <div class="modal-action">
+      <button class="btn" (click)="selected=null">Cancel</button>
+      <button class="btn btn-error" (click)="confirmDelete()">Delete</button>
+    </div>
+  </div>
+</div>
