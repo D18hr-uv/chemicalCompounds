@@ -31,15 +31,15 @@ app.use("/api/compounds", compoundRoutes);
 sequelize
   .authenticate()
   .then(() => {
-    console.log("✅ Database connected");
+    console.log("Database connected");
     return sequelize.sync();
   })
-  .then(() => console.log("✅ Database synced"))
-  .catch((err) => console.error("❌ DB error:", err));
+  .then(() => console.log("Database synced"))
+  .catch((err) => console.error("DB error:", err));
 
 /* SERVER */
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(` Server running on port ${PORT}`);
 });

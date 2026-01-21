@@ -114,25 +114,6 @@ export class ListComponent implements OnInit {
   }
 
   // CREATE COMPOUND (POST)
-  // createCompound(): void {
-  //   if (!this.newCompound.name || !this.newCompound.image) {
-  //     alert('Name and Image are required');
-  //     return;
-  //   }
-
-  //   this.service.createCompound(this.newCompound).subscribe({
-  //     next: () => {
-  //       this.closeCreate();
-  //       this.loadCompounds(); // refresh list
-  //     },
-  //     error: (err) => {
-  //       console.error('Create failed', err);
-  //       alert('Failed to create compound');
-  //     }
-  //   });
-  // }
-  // testClick() {
-  //   alert('Create works');
   // }
   createCompound() {
     console.log('Payload:', this.newCompound);

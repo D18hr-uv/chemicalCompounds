@@ -16,5 +16,4 @@ export class AppComponent {
       html.setAttribute('data-theme', 'dark');
     }
   }
-
 }
