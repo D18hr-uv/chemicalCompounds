@@ -7,7 +7,7 @@ https://drive.google.com/file/d/1zw0Ikf7t8v6qkS-UfhnLGnUBlHHFe-5c/view?usp=shari
 
 
 ## Postman Link:
-https://dhruvbhardwaj-9150ba3b-6356715.postman.co/workspace/Dhruv-Bhardwaj's-Workspace~b66ccc96-6b29-465a-8361-0d5cc8d0bd4e/collection/51500984-b898880d-302f-4c6d-9e65-42c25323026f?action=share&creator=51500984
+https://dhruvbhardwaj-9150ba3b-6356715.postman.co/workspace/Dhruv-Bhardwaj's-Workspace~b66ccc96-6b29-465a-8361-0d5cc8d0bd4e/collection/51500984-b898880d-302f-4c6d-9e65-42c25323026f?action=share&source=copy-link&creator=51500984
 
 ## Tech Stack
 
